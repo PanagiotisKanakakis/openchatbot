@@ -1,0 +1,28 @@
+{
+  "conversations": [
+    [
+      "How do I register for selfie?",
+      "In order to use SELFIE, you must first create an account for your school through the link you can find at\n  https://ec.europa.eu/education/schools-go-digital.\n  You should use an e-mail account which you have access to (eg the official e-mail address of the school) rather\n  than a personal one. If the school coordinator changes it means your school can keep the same address for\n  SELFIE."
+    ],
+    [
+      "How do I login?",
+      "Once registered, you will be able to log into SELFIE by going to https://ec.europa.eu/education/schools-go-\n  digital or https://schools-go-digital.jrc.ec.europa.eu and using the school’s email address and the newly\n  created password.\n  This will take you to the School Profile page on which you will be asked to provide some information about\n  your school, most of which is optional, such as an additional email address. Please check your school profile at\n  least once per year and make updates if needed.\n  The School Profile page is available on the right side of the main SELFIE menu once you log in to the school’s\n  account."
+    ],
+    [
+      "How do I navigate within SELFIE?",
+      "In the menu at the top of the SELFIE screen, there are different tabs, that can be used to navigate between the\n  different areas of the tool: About SELFIE, Set-up, Results, Certification, Resources, Upcoming Sessions, Data\n  Protection and School Profile."
+    ],
+    [
+      "How do I set SELFIE up for my school?",
+      "You can only set up for the current SELFIE session. This means if you are logging in during the time period of\nsession 1, you can't set up in advance for session 2."
+    ],
+    [
+      "How do I choose who will take part in SELFIE?",
+      "You can choose an education level to survey by selecting Set Up>Step 1: Select education level and choosing\none of five options:\n1.\n2.\n3.\n4.\n5.\nprimary education\nlower secondary education\nupper secondary general education\nupper secondary vocational education\npost-secondary non-tertiary education\nYou can choose more than one education level to survey at any one time."
+    ],
+    [
+      "What information do I need to add about participants?",
+      "You will need to enter the total number of school leaders, teachers and students, and the numbers that will be\ninvited to take part in SELFIE.\nYou can find guidance on how many staff and students should take part in SELFIE in the section What are the\nminimum participation rates?\nDefinitions\nIn this context, the term school leader refers to the school head/principal or deputy head/principal but it can\nalso include those in senior management or leadership roles. School heads and deputy heads should be\nconsidered as school leaders even if they also have teaching duties.\nThe term teacher includes teachers and other professional staff who are directly involved in teaching students.\nAny teacher who has worked in the school for at least one academic year should be invited to participate.\nThose class teachers with management or leadership responsibilities can be included either as a school leader\nSELFIE guide for School coordinators\n5or as a teacher or as both. In the latter case, they would complete two questionnaires, one as a school leader\nand one as a teacher.\nThe term student refers to a pupil enrolled in the school. For ISCED 1 (primary), only students who are aged 9\nand over are considered eligible, as children below this age may not fully understand the wording of the\nquestions.\nClick on the \"Save set up\" button on the right side, at the bottom of the page, to save this step and be\nautomatically redirected to the Steps menu. If you make changes, the button will be called \"Update the set-\nup\"."
+    ]
+  ]
+}
