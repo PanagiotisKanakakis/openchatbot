@@ -11,14 +11,15 @@ class MyLogicAdapter(LogicAdapter):
         return True
 
     def process(self, input_statement, additional_response_selection_parameters):
+        # additional_parameters = {
+        #     'in_response_to_not_contains': input_statement.text,
+        #     'statement_text_not_equals': input_statement.text
+        # }
         search_results = self.search_algorithm.search(input_statement)
-
         # Use the input statement as the closest match if no other results are found
         closest_match = next(search_results, input_statement)
-
         # Search for the closest match to the input statement
         for result in search_results:
-
             # Stop searching if a match that is close enough is found
             if result.confidence >= self.maximum_similarity_threshold:
                 closest_match = result
