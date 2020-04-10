@@ -17,7 +17,7 @@ services:
     restart: always
     volumes:
       - ./:/var/www
-      - ./nginx.conf:/etc/nginx/conf.d/
+      - ./nginx/:/etc/nginx/conf.d/
     ports:
       - 80:80
       - 443:443
