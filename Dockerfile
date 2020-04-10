@@ -5,6 +5,6 @@ WORKDIR /app
 
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
-RUN pip install chatterbot-coprus
+RUN pip install chatterbot-corpus
 EXPOSE 5111
 CMD ["python", "app.py"]
