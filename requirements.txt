@@ -3,3 +3,4 @@ flask-restplus
 requests
 chatterbot
 Werkzeug==0.16.1
+uWSGI==2.0.18
