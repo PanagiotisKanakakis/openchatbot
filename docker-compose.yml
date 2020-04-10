@@ -1,6 +1,7 @@
-version: "3.7"
-
+version: "3"
 services:
+
+
   flask:
     build: .
     container_name: chatbot
