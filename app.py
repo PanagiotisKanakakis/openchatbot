@@ -4,10 +4,13 @@ from configparser import ConfigParser
 from flask import Flask, request
 from flask_restplus import Resource, Api, fields
 from werkzeug import secure_filename, FileStorage
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from core.chatbot import *
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_port=1, x_for=1, x_host=1, x_prefix=1)
+
 api = Api(app)
 
 # init configuration variables
