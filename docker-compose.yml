@@ -1,0 +1,28 @@
+version: "3.7"
+
+services:
+  flask:
+    build: .
+    container_name: chatbot
+    restart: always
+    expose:
+      - 5111
+    networks:
+      - chatbot-network
+
+  nginx:
+    build: nginx:alpine
+    container_name: nginx_chatbot
+    restart: always
+    volumes:
+      - ./:/var/www
+      - ./nginx.conf:/etc/nginx/conf.d/
+    - ports:
+      - 80:80
+      - 443:443
+    networks:
+      - chatbot-network
+
+networks:
+  chatbot-network:
+    driver: bridge
