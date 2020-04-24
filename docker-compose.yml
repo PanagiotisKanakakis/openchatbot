@@ -6,7 +6,7 @@ services:
     build: .
     container_name: chatbot
     restart: always
-    port:
+    ports:
       - 5111:5111
     networks:
       - chatbot-network
