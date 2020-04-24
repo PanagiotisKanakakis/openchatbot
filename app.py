@@ -21,7 +21,7 @@ port = config.get('general', 'port')
 uploadFolder = config.get('general', 'uploadFolder')
 
 # init chatbot
-chatbot = init()
+chatbot, trainer = init()
 
 # parameters for swagger api
 name_space = api.namespace('chatterbot', description='Chatterbot Core Code API')
@@ -62,7 +62,7 @@ class chatterBotTrain(Resource):
         if file:
             filename = secure_filename(file.filename)
             file.save(os.path.join(uploadFolder, filename))
-            train(chatbot, uploadFolder + "/" + filename)
+            train(trainer, uploadFolder + "/" + filename)
             return 'file uploaded successfully'
 
 

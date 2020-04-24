@@ -19,11 +19,11 @@ def init():
         statement_comparison_function=comparisons.levenshtein_distance,
         response_selection_method=response_selection.get_first_response,
     )
-    return chatbot
-
-
-def train(chatbot, file):
     trainer = ChatterBotCorpusTrainer(chatbot)
+    return chatbot, trainer
+
+
+def train(trainer, file):
     trainer.train(file)
 
 
