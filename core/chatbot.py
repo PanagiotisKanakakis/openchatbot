@@ -29,9 +29,10 @@ def init():
             }
 
 
-        ],
-        statement_comparison_function=comparisons.levenshtein_distance,
-        response_selection_method=response_selection.get_first_response,
+        ]
+        # ,
+        # statement_comparison_function=comparisons.levenshtein_distance,
+        # response_selection_method=response_selection.get_first_response,
     )
     global trainer, tensorFlowTrainer, fastTextTrainer
     # tensorFlowTrainer = ChatterBotTensorFlowTrainer(chatbot)
