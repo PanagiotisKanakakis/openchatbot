@@ -18,12 +18,12 @@ def init():
         read_only=True,
         # storage_adapter='storageAdapter.CustomStorageAdapter',
         logic_adapters=[
-            {
-                "import_path": "core.tensorFlowLogicAdapter.TensorFlowLogicAdapter"
-            },
-            {
-                "import_path": "core.logicAdapter.MyLogicAdapter"
-            },
+            # {
+            #     "import_path": "core.tensorFlowLogicAdapter.TensorFlowLogicAdapter"
+            # }
+            # {
+            #     "import_path": "core.logicAdapter.MyLogicAdapter"
+            # },
             {
                 "import_path": "core.fastTextLogicAdapter.FastTextLogicAdapter"
             }
@@ -34,15 +34,15 @@ def init():
         response_selection_method=response_selection.get_first_response,
     )
     global trainer, tensorFlowTrainer, fastTextTrainer
-    tensorFlowTrainer = ChatterBotTensorFlowTrainer(chatbot)
+    # tensorFlowTrainer = ChatterBotTensorFlowTrainer(chatbot)
     fastTextTrainer = ChatterBotFastTextTrainer(chatbot)
-    trainer = ChatterBotCorpusTrainer(chatbot)
+    # trainer = ChatterBotCorpusTrainer(chatbot)
     return chatbot
 
 
 def train(file):
-    trainer.train(file)
-    tensorFlowTrainer.train(file)
+    # trainer.train(file)
+    # tensorFlowTrainer.train(file)
     fastTextTrainer.train(file)
 
 

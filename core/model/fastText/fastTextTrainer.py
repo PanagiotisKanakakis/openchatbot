@@ -1,6 +1,7 @@
 import json
 
 import fasttext
+import nltk
 from chatterbot.trainers import Trainer
 
 
@@ -26,18 +27,15 @@ class ChatterBotFastTextTrainer(Trainer):
     def modifyTrainingData(cls, *corpus_path):
         train_data = ''
         response_data = {}
-        counter = 0
         train_file = open(cls.train_file_name, 'w')
         response_file = open(cls.response_file_name, 'w')
+
         with open(*corpus_path) as json_data:
             intents = json.load(json_data)
-            # loop through each sentence in our intents patterns
             for QnA in intents['conversations']:
-                question = QnA[0]
-                answer = QnA[1]
-                train_data += '__label__QnA' + str(counter) + ' ' + question + '\n'
-                response_data['__label__QnA' + str(counter)] = answer
-                counter += 1
+                for pattern in QnA['patterns']:
+                    train_data += '__label__' + QnA['tag'] + ' ' + pattern + '\n'
+                response_data['__label__' + QnA['tag']] = QnA['responses'][0]
 
             train_file.write(train_data)
             response_file.write(json.dumps(response_data))

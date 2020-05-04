@@ -1,5 +1,7 @@
 import nltk
 import numpy as np
+import pandas as pd
+import tensorflow as tf
 from nltk.stem.lancaster import LancasterStemmer
 
 
@@ -33,18 +35,28 @@ class TensorFlowClassifier:
         return np.array(bag)
 
     def classify(self, sentence):
-        ERROR_THRESHOLD = 0.25
-        words = self.data['words']
         classes = self.data['classes']
         responses = self.data['responses']
-        # generate probabilities from the model
-        results = self.model.predict([self.bow(sentence, words)])[0]
-        # filter out predictions below a threshold
-        results = [[i, r] for i, r in enumerate(results) if r > ERROR_THRESHOLD]
-        # sort by strength of probability
-        results.sort(key=lambda x: x[1], reverse=True)
-        return_list = []
-        for r in results:
-            return_list.append((classes[r[0]], responses[r[0]], r[1]))
-        # return tuple of intent and probability
+        predict_input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
+            {'sentence': pd.DataFrame([sentence]).values}, shuffle=False)
+        predictions = self.model.predict(input_fn=predict_input_fn)
+        for pred_dict in predictions:
+            class_id = pred_dict['class_ids'][0]
+            probability = pred_dict['probabilities'][class_id]
+            return_list = [(classes[class_id], responses[class_id], probability)]
         return return_list
+        # ERROR_THRESHOLD = 0.25
+        # words = self.data['words']
+        # classes = self.data['classes']
+        # responses = self.data['responses']
+        # # generate probabilities from the model
+        # results = self.model.predict([self.bow(sentence, words)])[0]
+        # # filter out predictions below a threshold
+        # results = [[i, r] for i, r in enumerate(results) if r > ERROR_THRESHOLD]
+        # # sort by strength of probability
+        # results.sort(key=lambda x: x[1], reverse=True)
+        # return_list = []
+        # for r in results:
+        #     return_list.append((classes[r[0]], responses[r[0]], r[1]))
+        # # return tuple of intent and probability
+        # return return_list
