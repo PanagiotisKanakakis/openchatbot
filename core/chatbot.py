@@ -4,7 +4,7 @@ from chatterbot import ChatBot, comparisons, response_selection
 from chatterbot.trainers import ChatterBotCorpusTrainer
 
 from core.model.fastText.fastTextTrainer import ChatterBotFastTextTrainer
-from core.model.tensorFlow.tensorFlowTrainer import ChatterBotTensorFlowTrainer
+# from core.model.tensorFlow.tensorFlowTrainer import ChatterBotTensorFlowTrainer
 
 logging.basicConfig(level=logging.INFO)
 
