@@ -7,23 +7,9 @@ services:
     container_name: chatbot
     restart: always
     ports:
-      - 5111:5111
+      - 5000:5000
     networks:
       - chatbot-network
-
-#  nginx:
-#    image: nginx:alpine
-#    container_name: nginx_chatbot
-#    restart: always
-#    volumes:
-#      - ./:/var/www
-#      - ./nginx/:/etc/nginx/conf.d/
-#    ports:
-#      - 80:80
-#      - 443:443
-#    networks:
-#      - chatbot-network
-
 networks:
   chatbot-network:
     driver: bridge

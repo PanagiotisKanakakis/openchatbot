@@ -4,14 +4,7 @@ requests
 chatterbot
 Werkzeug==0.16.1
 uWSGI==2.0.18
-tensorflow==2.1
-tensorflow-hub==0.8.0
-tensorflow-tensorboard==1.5.1
-tensorboard==2.2.1
 numpy
-scipy
-pybind11
 git+https://github.com/facebookresearch/fastText.git
-pandas
-spacy==2.1
-https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.2.0/en_core_web_sm-2.2.0.tar.gz#egg=en_core_web_sm
+pyyaml==5.3
+https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.2.0/en_core_web_sm-2.2.0.tar.gz

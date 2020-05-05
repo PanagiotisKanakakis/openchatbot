@@ -4,7 +4,8 @@ COPY . /app
 WORKDIR /app
 
 COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
-RUN pip install chatterbot-corpus
-EXPOSE 5111
+RUN pip install spacy
+RUN spacy download en_core_web_sm
+RUN spacy download en
+EXPOSE 5000
 CMD ["python", "app.py"]
