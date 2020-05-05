@@ -8,5 +8,8 @@ tensorflow==2.1
 tensorflow-hub==0.8.0
 tensorflow-tensorboard==1.5.1
 tensorboard==2.2.1
+numpy
+scipy
+pybind11
 git+https://github.com/facebookresearch/fastText.git
 pandas
