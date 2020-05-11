@@ -19,7 +19,7 @@ class ChatterBotFastTextTrainer(Trainer):
     def train(cls, *corpus_paths):
         for file_path in corpus_paths:
             cls.modifyTrainingData(file_path)
-            model = fasttext.train_supervised(input=cls.train_file_name, lr=1.0, epoch=25, wordNgrams=2)
+            model = fasttext.train_supervised(input=cls.train_file_name, lr=1.0, epoch=25, wordNgrams=3)
             model.save_model(cls.model_name + '.bin')
 
     @classmethod
