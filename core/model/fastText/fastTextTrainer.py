@@ -10,24 +10,25 @@ class ChatterBotFastTextTrainer(Trainer):
     ChatterBot dialog corpus.
     """
 
-    model = None
-    model_name = 'fastText-model'
-    train_file_name = 'train_data_fastText.txt'
-    response_file_name = 'resposes_fastText.json'
+    def __init__(self, chatbot, **kwargs):
+        super().__init__(chatbot, **kwargs)
+        self.model = None
+        self.model_name = 'fastText-model'
+        self.train_file_name = 'train_data_fastText.txt'
+        self.response_file_name = 'resposes_fastText.json'
 
-    @classmethod
-    def train(cls, *corpus_paths):
+    def train(self, *corpus_paths):
         for file_path in corpus_paths:
-            cls.modifyTrainingData(file_path)
-            model = fasttext.train_supervised(input=cls.train_file_name, lr=1.0, epoch=25, wordNgrams=3)
-            model.save_model(cls.model_name + '.bin')
+            self.modifyTrainingData(file_path)
+            self.model = fasttext.train_supervised(input=self.train_file_name, lr=1.0, epoch=25, wordNgrams=3)
+            self.model.save_model(self.model_name + '.bin')
+            # self.chatbot.storage.create_many(statements_to_create)
 
-    @classmethod
-    def modifyTrainingData(cls, *corpus_path):
+    def modifyTrainingData(self, *corpus_path):
         train_data = ''
         response_data = {}
-        train_file = open(cls.train_file_name, 'w')
-        response_file = open(cls.response_file_name, 'w')
+        train_file = open(self.train_file_name, 'w')
+        response_file = open(self.response_file_name, 'w')
 
         with open(*corpus_path, "r", encoding='utf-8') as json_data:
             intents = json.load(json_data)
@@ -40,9 +41,3 @@ class ChatterBotFastTextTrainer(Trainer):
             response_file.write(json.dumps(response_data))
             train_file.close()
             response_file.close()
-
-    @classmethod
-    def get_model(cls):
-        if cls.model is None:
-            cls.model = fasttext.load_model(cls.model_name + '.bin')
-        return cls.model

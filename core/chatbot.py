@@ -1,10 +1,9 @@
 import logging
 
 from chatterbot import ChatBot, comparisons, response_selection
-from chatterbot.trainers import ChatterBotCorpusTrainer
 
 from core.model.fastText.fastTextTrainer import ChatterBotFastTextTrainer
-# from core.model.tensorFlow.tensorFlowTrainer import ChatterBotTensorFlowTrainer
+from core.model.wordSimilarity.wordSimilarityTrainer import ChatterBotWordSimilarityTrainer
 
 logging.basicConfig(level=logging.INFO)
 
@@ -12,43 +11,49 @@ tensorFlowTrainer = None
 trainer = None
 
 
-def init():
+def initLevenshtein():
+    global trainer
     chatbot = ChatBot(
         "Charlie",
         read_only=True,
-        # storage_adapter='storageAdapter.CustomStorageAdapter',
+        database_uri='sqlite:///database.db',
         logic_adapters=[
-            # {
-            #     "import_path": "core.tensorFlowLogicAdapter.TensorFlowLogicAdapter"
-            # }
-            # {
-            #     "import_path": "core.logicAdapter.MyLogicAdapter"
-            # },
+            {
+                "import_path": "core.logicAdapter.MyLogicAdapter"
+            }
+        ],
+        statement_comparison_function=comparisons.levenshtein_distance,
+        response_selection_method=response_selection.get_first_response,
+    )
+    trainer = ChatterBotWordSimilarityTrainer(chatbot)
+    return chatbot
+
+
+def initFastText():
+    global fastTextTrainer
+    chatbot = ChatBot(
+        "FastText",
+        read_only=True,
+        # storage_adapter='core.storageAdapter.CustomStorageAdapter',
+        logic_adapters=[
             {
                 "import_path": "core.fastTextLogicAdapter.FastTextLogicAdapter"
             }
-
-
         ]
-        # ,
-        # statement_comparison_function=comparisons.levenshtein_distance,
-        # response_selection_method=response_selection.get_first_response,
     )
-    global trainer, tensorFlowTrainer, fastTextTrainer
-    # tensorFlowTrainer = ChatterBotTensorFlowTrainer(chatbot)
     fastTextTrainer = ChatterBotFastTextTrainer(chatbot)
-    # trainer = ChatterBotCorpusTrainer(chatbot)
     return chatbot
 
 
 def train(file):
-    # trainer.train(file)
-    # tensorFlowTrainer.train(file)
     fastTextTrainer.train(file)
+    trainer.train(file)
 
 
-def generateResponse(chatbot, question):
-    return chatbot.get_response(question).text
+def generateResponse(chatbotLevenshtein, chatbotFastText, question):
+    s1 = chatbotLevenshtein.get_response(question)
+    s2 = chatbotFastText.get_response(question)
+    return [("Levenshtein similarity", s1.text, s1.confidence), ("FastText similarity", s2.text, s2.confidence)]
 
 
 def trainTensorFlowModel(file):

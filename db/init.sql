@@ -31,3 +31,13 @@ CREATE TABLE ANSWER
     Description TEXT     NOT NULL,
     AnswerDate  DATETIME NOT NULL,
     Primary Key (QuestionId),
+    Foreign Key (QuestionId) REFERENCES QUESTION (Id)
+);
+
+CREATE TABLE MODEL
+(
+    Id           INTEGER auto_increment,
+    FilePath     TEXT     NOT NULL,
+    Language     TEXT     NOT NULL,
+    PRIMARY KEY (Id)
+);

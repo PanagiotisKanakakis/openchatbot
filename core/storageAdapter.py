@@ -19,34 +19,7 @@ class CustomStorageAdapter(StorageAdapter):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        from sqlalchemy import create_engine
-        from sqlalchemy.orm import sessionmaker
-
         self.database_uri = kwargs.get('database_uri', False)
-
-        # None results in a sqlite in-memory database as the default
-        if self.database_uri is None:
-            self.database_uri = 'sqlite://'
-
-        # Create a file database if the database is not a connection string
-        if not self.database_uri:
-            self.database_uri = 'sqlite:///db.sqlite3'
-
-        self.engine = create_engine(self.database_uri, convert_unicode=True)
-
-        if self.database_uri.startswith('sqlite://'):
-            from sqlalchemy.engine import Engine
-            from sqlalchemy import event
-
-            @event.listens_for(Engine, 'connect')
-            def set_sqlite_pragma(dbapi_connection, connection_record):
-                dbapi_connection.execute('PRAGMA journal_mode=WAL')
-                dbapi_connection.execute('PRAGMA synchronous=NORMAL')
-
-        if not self.engine.dialect.has_table(self.engine, 'Statement'):
-            self.create_database()
-
-        self.Session = sessionmaker(bind=self.engine, expire_on_commit=True)
 
     def get_statement_model(self):
         """
@@ -346,28 +319,6 @@ class CustomStorageAdapter(StorageAdapter):
 
         session.close()
         return statement
-
-    def drop(self):
-        """
-        Drop the database.
-        """
-        Statement = self.get_model('statement')
-        Tag = self.get_model('tag')
-
-        session = self.Session()
-
-        session.query(Statement).delete()
-        session.query(Tag).delete()
-
-        session.commit()
-        session.close()
-
-    def create_database(self):
-        """
-        Populate the database with the tables.
-        """
-        from chatterbot.ext.sqlalchemy_app.models import Base
-        Base.metadata.create_all(self.engine)
 
     def _session_finish(self, session, statement_text=None):
         from sqlalchemy.exc import InvalidRequestError

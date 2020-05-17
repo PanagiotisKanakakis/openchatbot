@@ -21,7 +21,8 @@ port = config.get('general', 'port')
 uploadFolder = config.get('general', 'uploadFolder')
 
 # init chatbot
-chatbot = init()
+chatbotLevenshtein = initLevenshtein()
+chatbotFastText = initFastText()
 
 # parameters for swagger api
 name_space = api.namespace('chatterbot', description='Chatterbot Core Code API')
@@ -43,7 +44,7 @@ class chatterBotQuestion(Resource):
     @api.doc(responses={400: "Empty question to chatterbot", 200: "OK"})
     @api.expect(question)
     def post(self):
-        return generateResponse(chatbot, request.json['question'])
+        return generateResponse(chatbotLevenshtein, chatbotFastText, request.json['question'])
 
 
 @name_space.route("/train")
@@ -65,26 +66,6 @@ class chatterBotTrain(Resource):
             train(uploadFolder + "/" + filename)
             return 'file uploaded successfully'
 
-
-# @name_space.route("/trainTensorFlow")
-# class chatterBotTensorflowTrain(Resource):
-#     @api.doc(responses={400: "Empty File", 200: "OK"})
-#     @api.expect(file, validate=True)
-#     def post(self):
-#         # check if the post request has the file part
-#         if 'file' not in request.files:
-#             return 'No file part'
-#         file = request.files['file']
-#         # if user does not select file, browser also
-#         # submit an empty part without filename
-#         if file.filename == '':
-#             return 'No selected file'
-#         if file:
-#             filename = secure_filename(file.filename)
-#             file.save(os.path.join(uploadFolder, filename))
-#             trainTensorFlowModel(uploadFolder + "/" + filename)
-#             return 'file uploaded successfully'
-#
 
 if __name__ == '__main__':
     logging.basicConfig(filename='error.log', level=logging.DEBUG)

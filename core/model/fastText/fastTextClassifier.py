@@ -1,9 +1,11 @@
 import json
 from json import JSONEncoder
+from os import path
 
 import nltk
 import numpy
 import numpy as np
+import fasttext
 from nltk.stem.lancaster import LancasterStemmer
 
 
@@ -16,8 +18,9 @@ class NumpyArrayEncoder(JSONEncoder):
 
 class FastTextClassifier:
 
-    def __init__(self, model):
-        self.model = model
+    def __init__(self):
+        if path.exists('fastText-model.bin'):
+            self.model = fasttext.load_model('fastText-model.bin')
 
     def clean_up_sentence(self, sentence):
         stemmer = LancasterStemmer()

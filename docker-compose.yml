@@ -7,19 +7,21 @@ services:
     restart: always
     ports:
       - 5000:5000
-#    links:
-#      - db
+    links:
+      - db
     networks:
       - chatbot-network
 
-#  db:
-#    image: mysql:5.7
-#    ports:
-#      - "33306:3306"
-#    environment:
-#      MYSQL_ROOT_PASSWORD: root
-#    volumes:
-#      - ./db:/docker-entrypoint-initdb.d/:ro
+  db:
+    image: mysql:5.7
+    ports:
+      - "33306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/:ro
+    networks:
+      - chatbot-network
 
 
 networks:
