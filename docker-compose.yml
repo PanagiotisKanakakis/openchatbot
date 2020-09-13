@@ -1,29 +1,38 @@
-version: "3"
+version: "3.3"
 services:
 
-  chatbot:
-    build: .
-    container_name: chatbot
-    restart: always
-    ports:
-      - 5000:5000
-    links:
-      - db
-    networks:
-      - chatbot-network
+#  chatbot:
+#    build: .
+#    container_name: chatbot
+#    restart: always
+#    volumes:
+#      - chatbot-logs:/logs
+#    ports:
+#      - 5000:5000
+#    depends_on:
+#      - db
+#    networks:
+#      - chatbot-network
 
   db:
     image: mysql:5.7
     ports:
-      - "33306:3306"
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
     volumes:
-      - ./db:/docker-entrypoint-initdb.d/:ro
+      - mysql:/var/lib/mysql
+      - type: bind
+        source: ./db
+        target: /docker-entrypoint-initdb.d
     networks:
       - chatbot-network
-
+    restart: unless-stopped
 
 networks:
   chatbot-network:
     driver: bridge
+
+volumes:
+  mysql:
+  chatbot-logs:

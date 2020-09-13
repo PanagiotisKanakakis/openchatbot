@@ -1,7 +1,6 @@
 import json
 from json import JSONEncoder
-from os import path
-
+import os
 import nltk
 import numpy
 import numpy as np
@@ -18,9 +17,10 @@ class NumpyArrayEncoder(JSONEncoder):
 
 class FastTextClassifier:
 
-    def __init__(self):
-        if path.exists('fastText-model.bin'):
-            self.model = fasttext.load_model('fastText-model.bin')
+    def __init__(self, languageCode):
+        self.languageCode = languageCode
+        if os.path.exists(os.path.join(os.getcwd(), 'files/models/' + self.languageCode + '.bin')):
+            self.model = fasttext.load_model(os.path.join(os.getcwd(), 'files/models/' + self.languageCode + '.bin'))
 
     def clean_up_sentence(self, sentence):
         stemmer = LancasterStemmer()
@@ -56,7 +56,7 @@ class FastTextClassifier:
         return prediction
 
     def utter(self, prediction):
-        response_file = open('resposes_fastText.json', 'r')
+        response_file = open(os.path.join(os.getcwd(), 'files/response_data/' + self.languageCode + '.json'), 'r')
         responses = json.loads(response_file.read())
         labels = json.loads(prediction)[0][0]
         confidences = json.loads(prediction)[1][0]

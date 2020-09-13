@@ -1,43 +1,50 @@
 import json
+import os
 
 import fasttext
 from chatterbot.trainers import Trainer
 
 
+def createFile(filename):
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+
+
 class ChatterBotFastTextTrainer(Trainer):
-    """
-    Allows the chat bot to be trained using data from the
-    ChatterBot dialog corpus.
-    """
 
     def __init__(self, chatbot, **kwargs):
         super().__init__(chatbot, **kwargs)
-        self.model = None
-        self.model_name = 'fastText-model'
-        self.train_file_name = 'train_data_fastText.txt'
-        self.response_file_name = 'resposes_fastText.json'
+        self.httpClient = None
 
-    def train(self, *corpus_paths):
-        for file_path in corpus_paths:
-            self.modifyTrainingData(file_path)
-            self.model = fasttext.train_supervised(input=self.train_file_name, lr=1.0, epoch=25, wordNgrams=3)
-            self.model.save_model(self.model_name + '.bin')
-            # self.chatbot.storage.create_many(statements_to_create)
+    def setHttpClient(self, httpClient):
+        self.httpClient = httpClient
 
-    def modifyTrainingData(self, *corpus_path):
-        train_data = ''
-        response_data = {}
-        train_file = open(self.train_file_name, 'w')
-        response_file = open(self.response_file_name, 'w')
+    def train(self):
+        languages = self.httpClient.getAllLanguages()
+        topics = self.httpClient.getAllTopics()
+        for language in languages:
+            languageCode = language['code']
+            train_data = ''
+            response_data = {}
+            train_file_name = os.path.join(os.getcwd(), 'files/train_data/' + languageCode + '.txt')
+            response_file_name = os.path.join(os.getcwd(), 'files/response_data/' + languageCode + '.json')
 
-        with open(*corpus_path, "r", encoding='utf-8') as json_data:
-            intents = json.load(json_data)
-            for QnA in intents['conversations']:
-                for pattern in QnA['patterns']:
-                    train_data += '__label__' + QnA['tag'] + ' ' + pattern + '\n'
-                response_data['__label__' + QnA['tag']] = QnA['responses'][0]
+            createFile(train_file_name)
+            createFile(response_file_name)
 
+            train_file = open(train_file_name, 'w+')
+            response_file = open(response_file_name, 'w+')
+            for topic in topics:
+                topicId = topic["id"]
+                questions = self.httpClient.getQuestionPerTopicAndLanguage(topicId, languageCode)
+                for question in questions:
+                    train_data += '__label__' + str(topicId) + ' ' + question['description'] + '\n'
+                    answer = question['answer']
+                    response_data['__label__' + str(topicId)] = answer['description']
             train_file.write(train_data)
             response_file.write(json.dumps(response_data))
             train_file.close()
             response_file.close()
+            model = fasttext.train_supervised(input=train_file_name, lr=1.0, epoch=25, wordNgrams=3)
+            model_file_name = os.path.join(os.getcwd(), 'files/models/' + languageCode + '.bin')
+            createFile(model_file_name)
+            model.save_model(model_file_name)

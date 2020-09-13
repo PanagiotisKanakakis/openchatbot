@@ -1,7 +1,7 @@
 flask
 flask-restplus
 requests
-chatterbot
+chatterbot==1.0.5
 Werkzeug==0.16.1
 uWSGI==2.0.18
 numpy
