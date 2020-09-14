@@ -2,6 +2,7 @@ import logging
 
 from chatterbot import ChatBot, comparisons, response_selection
 
+from core.model.fastText.fastTextTrainer import ChatterBotFastTextTrainer
 from core.model.wordSimilarity.wordSimilarityTrainer import ChatterBotWordSimilarityTrainer
 
 logging.basicConfig(level=logging.INFO)
