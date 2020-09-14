@@ -5,7 +5,6 @@ class HttpClient:
 
     def __init__(self, config):
         self.baseUrl = config.get('db-api', 'host')
-        self.getAllLanguages()
 
     def getAllLanguages(self):
         return requests.get(self.baseUrl + "/languages").json()
