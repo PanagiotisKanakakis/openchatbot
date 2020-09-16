@@ -20,7 +20,9 @@ class ChatterBotFastTextTrainer(Trainer):
 
     def train(self):
         languages = self.httpClient.getAllLanguages()
+        print(languages)
         topics = self.httpClient.getAllTopics()
+        print(topics)
         for language in languages:
             languageCode = language['code']
             train_data = ''
