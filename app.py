@@ -4,12 +4,14 @@ from flask import Flask, request
 from flask_restplus import Resource, Api, fields
 from werkzeug import FileStorage
 from werkzeug.middleware.proxy_fix import ProxyFix
+from flask_cors import CORS, cross_origin
 
 from core.chatbot import *
 from core.http.HttpClient import HttpClient
 
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_port=1, x_for=1, x_host=1, x_prefix=1)
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 api = Api(app)
 
@@ -44,6 +46,11 @@ def log_request_info():
     logging.debug('Headers: %s', request.headers)
     logging.debug('Body: %s', request.get_data())
 
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', '*')
+    return response
 
 @name_space.route("/applyQuestion")
 class chatterBotQuestion(Resource):
