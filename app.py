@@ -7,7 +7,6 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 
 from core.chatbot import *
 from core.http.HttpClient import HttpClient
-from core.mailer.MailClient import MailClient
 
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_port=1, x_for=1, x_host=1, x_prefix=1)
@@ -22,7 +21,6 @@ host = config.get('general', 'host')
 port = config.get('general', 'port')
 threshold = config.get('general', 'confidence_value_threshold')
 httpClient = HttpClient(config)
-mailClient = MailClient(config)
 
 # init chatbot
 chatbotLevenshtein = initLevenshtein()
@@ -57,7 +55,7 @@ class chatterBotQuestion(Resource):
     @api.doc(responses={400: "Empty question to chatterbot", 200: "OK"})
     @api.expect(question)
     def post(self):
-        return generateResponse(mailClient, chatbotLevenshtein, chatbotFastText, request.json['text'],
+        return generateResponse(chatbotLevenshtein, chatbotFastText, request.json['text'],
                                 request.json['languageCode'], threshold)
 
 

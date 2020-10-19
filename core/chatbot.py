@@ -45,7 +45,7 @@ def initFastText(httpClient):
     return chatbot
 
 
-def generateResponse(mailClient, chatbotLevenshtein, chatbotFastText, question, languageCode, threshold):
+def generateResponse(chatbotLevenshtein, chatbotFastText, question, languageCode, threshold):
     s1 = chatbotLevenshtein.get_response(question)
     args = {'additional_response_selection_parameters': {'languageCode': languageCode}}
     s2 = chatbotFastText.get_response(question, **args)
@@ -56,14 +56,5 @@ def generateResponse(mailClient, chatbotLevenshtein, chatbotFastText, question, 
         response = ("Levenshtein similarity", s1.text, s1.confidence)
 
     if response[2] <= float(threshold):
-        if languageCode != 'en':
-            response = ("No Algorithm", "There is no answer defined for your question! Would you like to submit you "
-                                        "question again in English?", 0.0)
-            # mailClient.sendMails()
-        else:
-            response = (
-                "No Algorithm", "There is no answer defined for your question! Selfie Experts will be notified and "
-                                "respond as soon as possible!", 0.0)
-            # mailClient.sendMails()
-
+        return []
     return [response[1]]
