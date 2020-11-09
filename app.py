@@ -23,7 +23,7 @@ threshold = config.get('general', 'confidence_value_threshold')
 httpClient = HttpClient(config)
 
 # init chatbot
-chatbotLevenshtein = initLevenshtein()
+chatbotLevenshtein = initLevenshtein(httpClient)
 chatbotFastText = initFastText(httpClient)
 
 # parameters for swagger api

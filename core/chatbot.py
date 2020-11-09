@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.INFO)
 trainer = None
 
 
-def initLevenshtein():
+def initLevenshtein(httpClient):
     global trainer
     chatbot = ChatBot(
         "Charlie",
@@ -23,7 +23,9 @@ def initLevenshtein():
         statement_comparison_function=comparisons.levenshtein_distance,
         response_selection_method=response_selection.get_first_response,
     )
-    trainer = ChatterBotWordSimilarityTrainer(chatbot)
+    wordSimilarityTrainer = ChatterBotWordSimilarityTrainer(chatbot)
+    wordSimilarityTrainer.setHttpClient(httpClient)
+    wordSimilarityTrainer.train()
     return chatbot
 
 

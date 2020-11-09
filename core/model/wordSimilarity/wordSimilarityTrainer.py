@@ -5,36 +5,48 @@ from chatterbot.trainers import Trainer
 
 
 class ChatterBotWordSimilarityTrainer(Trainer):
+    def __init__(self, chatbot, **kwargs):
+        super().__init__(chatbot, **kwargs)
+        self.httpClient = None
+
+    def setHttpClient(self, httpClient):
+        self.httpClient = httpClient
 
     def train(self, *corpus_paths):
-        for file_path in corpus_paths:
-            with open(file_path, "r", encoding='utf-8') as json_data:
-                intents = json.load(json_data)
-                statements_to_create = []
+        languages = self.httpClient.getAllLanguages()
+        topics = self.httpClient.getAllTopics()
 
-                for QnA in intents['conversations']:
-                    for pattern in QnA['patterns']:
-                        response = QnA['responses'][0]
+        for language in languages:
+            statements_to_create = []
+            languageCode = language['code']
+            for topic in topics:
+                topicId = topic["id"]
+                questions = self.httpClient.getQuestionPerTopicAndLanguage(topicId, languageCode)
+                for question in questions:
+                    answer = question['answer']
+                    response = answer['description']
+                    question = question['description']
+                    statement_search_text = self.chatbot.storage.tagger.get_bigram_pair_string(response)
+                    search_in_response_to = self.chatbot.storage.tagger.get_bigram_pair_string(question)
+                    statement = Statement(
+                        text=response,
+                        search_text=statement_search_text,
+                        in_response_to=question,
+                        search_in_response_to=search_in_response_to,
+                        conversation='training'
+                    )
+                    statement = self.get_preprocessed_statement(statement)
+                    statements_to_create.append(statement)
 
-                        statement_search_text = self.chatbot.storage.tagger.get_bigram_pair_string(response)
-                        search_in_response_to = self.chatbot.storage.tagger.get_bigram_pair_string(pattern)
-                        statement = Statement(
-                            text=response,
-                            search_text=statement_search_text,
-                            in_response_to=pattern,
-                            search_in_response_to=search_in_response_to,
-                            conversation='training'
-                        )
-                        statement = self.get_preprocessed_statement(statement)
-                        statements_to_create.append(statement)
-
-                        pattern_pair = self.chatbot.storage.tagger.get_bigram_pair_string(pattern)
-                        statement = Statement(
-                            text=pattern,
-                            search_text=pattern_pair,
-                            conversation='training'
-                        )
-                        statement = self.get_preprocessed_statement(statement)
-                        statements_to_create.append(statement)
-
+                    pattern_pair = self.chatbot.storage.tagger.get_bigram_pair_string(question)
+                    statement = Statement(
+                        text=question,
+                        search_text=pattern_pair,
+                        conversation='training'
+                    )
+                    statement = self.get_preprocessed_statement(statement)
+                    statements_to_create.append(statement)
             self.chatbot.storage.create_many(statements_to_create)
+
+
+
