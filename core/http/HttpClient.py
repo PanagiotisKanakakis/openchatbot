@@ -14,3 +14,6 @@ class HttpClient:
 
     def getQuestionPerTopicAndLanguage(self, topicId, languageCode):
         return requests.get(self.baseUrl + "/questions/"+languageCode+"/"+str(topicId)).json()
+
+    def getQuestionsPerLanguage(self, languageCode):
+        return requests.get(self.baseUrl + "/questions/"+languageCode).json()

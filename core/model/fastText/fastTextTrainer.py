@@ -33,18 +33,17 @@ class ChatterBotFastTextTrainer(Trainer):
 
             train_file = open(train_file_name, 'w+')
             response_file = open(response_file_name, 'w+')
-            for topic in topics:
-                topicId = topic["id"]
-                questions = self.httpClient.getQuestionPerTopicAndLanguage(topicId, languageCode)
-                for question in questions:
-                    train_data += '__label__' + str(topicId) + ' ' + question['description'] + '\n'
-                    answer = question['answer']
-                    response_data['__label__' + str(topicId)] = answer['description']
+            questions = self.httpClient.getQuestionsPerLanguage(languageCode)
+            for question in questions:
+                train_data += '__label__' + str(question['id']) + ' ' + question[
+                    'description'] + '\n'
+                answer = question['answer']
+                response_data['__label__' + str(question['id'])] = answer['description']
             train_file.write(train_data)
             response_file.write(json.dumps(response_data))
             train_file.close()
             response_file.close()
-            model = fasttext.train_supervised(input=train_file_name, lr=1.0, epoch=25, wordNgrams=3)
+            model = fasttext.train_supervised(input=train_file_name, lr=0.5, epoch=25, wordNgrams=2)
             model_file_name = os.path.join(os.getcwd(), 'files/models/' + languageCode + '.bin')
             createFile(model_file_name)
             model.save_model(model_file_name)
