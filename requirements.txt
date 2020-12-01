@@ -7,8 +7,7 @@ Werkzeug==0.16.1
 uWSGI==2.0.18
 numpy
 git+https://github.com/facebookresearch/fastText.git
-pyyaml==5.3
-https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.2.0/en_core_web_sm-2.2.0.tar.gz
+pyyaml>=5.1
 mysql-connector
 anyjson==0.3.3
 jsonpatch==1.16
