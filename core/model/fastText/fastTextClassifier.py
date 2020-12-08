@@ -1,10 +1,11 @@
 import json
-from json import JSONEncoder
 import os
+from json import JSONEncoder
+
+import fasttext
 import nltk
 import numpy
 import numpy as np
-import fasttext
 from nltk.stem.lancaster import LancasterStemmer
 
 

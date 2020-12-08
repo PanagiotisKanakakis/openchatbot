@@ -13,8 +13,11 @@ class FastTextLogicAdapter(LogicAdapter):
         return True
 
     def process(self, input_statement, additional_response_selection_parameters):
-        clf = FastTextClassifier(additional_response_selection_parameters.get('languageCode'))
-        results = clf.classify(input_statement.text)
+        if additional_response_selection_parameters.get('languageCode') != 'en':
+            results = [('', 0.0)]
+        else:
+            clf = FastTextClassifier(additional_response_selection_parameters.get('languageCode'))
+            results = clf.classify(input_statement.text)
         # if we have a classification then find the matching intent tag
         if results:
             response = Statement(text=results[0][0])
