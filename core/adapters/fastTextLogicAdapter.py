@@ -8,13 +8,16 @@ class FastTextLogicAdapter(LogicAdapter):
     def __init__(self, chatbot, **kwargs):
         super().__init__(chatbot, **kwargs)
         self.excluded_words = []
-        self.clf = FastTextClassifier('en')
+        self.clf = None
         self.languageCode = 'en'
 
     def can_process(self, statement):
         return True
 
     def process(self, input_statement, additional_response_selection_parameters):
+
+        if self.clf is None:
+            self.clf = FastTextClassifier('en')
 
         if self.languageCode != additional_response_selection_parameters.get('languageCode'):
             self.clf = FastTextClassifier(additional_response_selection_parameters.get('languageCode'))

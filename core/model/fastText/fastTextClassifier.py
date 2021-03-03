@@ -26,6 +26,7 @@ class FastTextClassifier:
 
     def __init__(self, languageCode):
         self.languageCode = languageCode
+        print(os.path.exists(os.path.join(os.getcwd(), 'files/models/' + self.languageCode + '.bin')))
         if os.path.exists(os.path.join(os.getcwd(), 'files/models/' + self.languageCode + '.bin')):
             self.model = fasttext.load_model(os.path.join(os.getcwd(), 'files/models/' + self.languageCode + '.bin'))
 
