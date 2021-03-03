@@ -24,7 +24,7 @@ class FastTextLogicAdapter(LogicAdapter):
             results = [('', 0.0)]
         else:
             results = self.clf.classify(input_statement.text)
-        # if we have a classification then find the matching intent tag
+        # if we have a classification then find the matching intent tagn
         if results:
             response = Statement(text=results[0][0])
             response.confidence = results[0][1]

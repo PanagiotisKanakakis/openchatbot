@@ -56,17 +56,6 @@ class ChatterBotFastTextTrainer(Trainer):
         languageCode = 'en'
         train_file_name = os.path.join(os.getcwd(), 'files/train_data/' + languageCode + '.txt')
 
-        data = ''
-        with open(train_file_name) as fp:
-            line = fp.readline()
-            while line:
-                data += self.preprocess(line)
-                line = fp.readline()
-
-        # train_file_name = os.path.join(os.getcwd(), 'files/train_data/' + languageCode + 'filtered.txt')
-        # train_file = open(train_file_name, 'w+')
-        # train_file.write(data)
-        # train_file.close()
         languages = self.httpClient.getAllLanguages()
         for language in languages:
             languageCode = language['code']
