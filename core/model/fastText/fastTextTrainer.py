@@ -1,7 +1,7 @@
+import json
 import os
 
 import fasttext
-import json
 import nltk
 from chatterbot.trainers import Trainer
 from nltk import word_tokenize
@@ -83,13 +83,13 @@ class ChatterBotFastTextTrainer(Trainer):
                 response_file.write(json.dumps(response_data))
                 train_file.close()
                 response_file.close()
-        hyper_params = {"lr": 1.0,
-                        "epoch": 50,
-                        "wordNgrams": 2,
-                        "minn": 3,
-                        "maxn": 5,
-                        "dim": 100}
-        model = fasttext.train_supervised(input=train_file_name, **hyper_params)
-        model_file_name = os.path.join(os.getcwd(), 'files/models/' + languageCode + '.bin')
-        createFile(model_file_name)
-        model.save_model(model_file_name)
+                hyper_params = {"lr": 1.0,
+                                "epoch": 50,
+                                "wordNgrams": 2,
+                                "minn": 3,
+                                "maxn": 5,
+                                "dim": 100}
+                model = fasttext.train_supervised(input=train_file_name, **hyper_params)
+                model_file_name = os.path.join(os.getcwd(), 'files/models/' + languageCode + '.bin')
+                createFile(model_file_name)
+                model.save_model(model_file_name)
