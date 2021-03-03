@@ -6,7 +6,13 @@ import fasttext
 import nltk
 import numpy
 import numpy as np
+from nltk import word_tokenize
 from nltk.stem.lancaster import LancasterStemmer
+
+STOP_WORDS = nltk.corpus.stopwords.words('english')
+STOP_WORDS.append('Selfie')
+STOP_WORDS.append('SELFIE')
+STOP_WORDS.append('selfie')
 
 
 class NumpyArrayEncoder(JSONEncoder):
@@ -47,6 +53,7 @@ class FastTextClassifier:
         return np.array(bag)
 
     def classify(self, sentence):
+        sentence = self.preprocess(sentence)
         prediction = self.predict(sentence)
         utterance = self.utter(prediction)
         return utterance
@@ -62,3 +69,10 @@ class FastTextClassifier:
         labels = json.loads(prediction)[0][0]
         confidences = json.loads(prediction)[1][0]
         return [(responses[labels[0]], confidences[0])]
+
+    def preprocess(self, sentence):
+        filtered_sentence = ''
+        line_token = word_tokenize(sentence)
+        remove_sw = [word for word in line_token if not word in STOP_WORDS]
+        filtered_sentence += ' '.join(remove_sw)
+        return filtered_sentence
