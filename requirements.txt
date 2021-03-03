@@ -13,3 +13,4 @@ anyjson==0.3.3
 jsonpatch==1.16
 jsonpointer==1.10
 jsonschema==2.6.0
+nltk==3.5

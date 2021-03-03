@@ -8,6 +8,7 @@ RUN pip3 install --upgrade pip
 RUN pip3 install -r requirements.txt
 RUN pip3 install spacy
 RUN pip3 install chatterbot-corpus
+RUN python3 -m nltk.downloader stopwords
 RUN spacy download en_core_web_sm
 RUN spacy download en
 EXPOSE 5000
