@@ -3,7 +3,7 @@ flask-restplus
 flask-cors
 requests==2.23.0
 chatterbot==1.0.5
-Werkzeug==0.16.1
+Werkzeug==2.2.3
 uWSGI==2.0.18
 numpy
 git+https://github.com/facebookresearch/fastText.git
